@@ -1,0 +1,16 @@
+/* Global */
+@use 'abstract' as *;
+
+/* Debugging */
+*,
+*::before,
+*::after {
+  outline: 1px solid limegreen !important;
+  // background: rgba(0, 100, 0, 0.1) !important;
+}
+
+body {
+  background-color: var(--clr-background);
+  font-family: var(--ff-sans);
+  font-size: rem(16);
+}

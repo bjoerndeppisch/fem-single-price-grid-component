@@ -1,0 +1,68 @@
+@use 'sass:math';
+
+// Functions
+
+// REM() / EM()
+// Source: https://github.com/thecodercoder/responsive-design-beginners-test/blob/main/app/scss/util/_functions.scss
+// Source: https://css-tricks.com/snippets/sass/px-to-em-functions/
+@function rem($pixel) {
+    @if math.is-unitless($pixel) {
+        @return math.div($pixel, 16) * 1rem;
+    }
+
+    @else {
+        @error 'Don\'t use units when using the rem() function; only numbers.';
+    }
+}
+
+@function em($pixel) {
+    @if math.is-unitless($pixel) {
+        @return math.div($pixel, 16) * 1em;
+    }
+
+    @else {
+        @error 'Don\'t use units when using the em() function; only numbers.';
+    }
+}
+
+
+// CLAMP-BUILDER()
+// Source: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
+@function clamp-builder($minSize, $maxSize, $minWidth: 375, $maxWidth: 1440, $remBase: 16) {
+
+    // convert to rem
+    $minSize: math.div($minSize, $remBase);
+    $maxSize: math.div($maxSize, $remBase);
+    $maxWidth: math.div($maxWidth, $remBase);
+    $minWidth: math.div($minWidth, $remBase);
+
+    // do calculations
+    $slope: math.div(($maxSize - $minSize), ($maxWidth - $minWidth));
+    $yAxisIntersection: -$minWidth * $slope + $minSize;
+
+    // output with units
+    $minSize: $minSize * 1rem;
+    $maxSize: $maxSize * 1rem;
+    $slope: $slope * 100vw;
+    $yAxisIntersection: $yAxisIntersection * 1rem;
+
+    $preferredValue: calc(#{$yAxisIntersection} + #{$slope});
+
+    @return clamp($minSize, $preferredValue, $maxSize);
+}
+
+
+// Breakpoints
+
+$breakpoints: (
+    'small': em(640),
+    'medium': em(768),
+    'large': em(1024),
+    'xlarge': em(1280),
+);
+
+@mixin breakpoint($size) {
+    @media (min-width: map-get($breakpoints, $size)) {
+        @content;
+    }
+}

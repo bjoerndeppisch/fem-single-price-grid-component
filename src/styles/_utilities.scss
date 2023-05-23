@@ -1,0 +1,50 @@
+/* Utilities */
+@use 'abstract' as *;
+
+.center {
+  display: grid;
+  place-content: center;
+}
+
+.flex {
+  display: flex;
+
+  &--center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.stack {
+  // Enter desired spaces
+  --space: 1.5rem;
+  --space-e: 3rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  // Reset the stack
+  & * {
+    margin-block: 0;
+  }
+
+  & * + * {
+    margin-block-start: var(--space);
+  }
+
+  &--exception,
+  &--exception + * {
+    margin-block-start: var(--space-e);
+  }
+
+  // Split the stack
+  & > :nth-child(0) {
+    margin-block-end: auto;
+  }
+
+  &:only-child {
+    block-size: 100%;
+  }
+}
